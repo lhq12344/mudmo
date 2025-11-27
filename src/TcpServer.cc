@@ -48,7 +48,7 @@ TcpServer::~TcpServer()
 // 设置底层subloop的个数
 void TcpServer::setThreadNum(int numThreads)
 {
-    int numThreads_=numThreads;
+    numThreads_=numThreads;
     threadPool_->setThreadNum(numThreads_);
 }
 
@@ -58,7 +58,7 @@ void TcpServer::start()
     if (started_.fetch_add(1) == 0)    // 防止一个TcpServer对象被start多次
     {
         threadPool_->start(threadInitCallback_);    // 启动底层的loop线程池
-        loop_->runInLoop(std::bind(&Acceptor::listen, acceptor_.get()));
+        loop_->runInLoop(std::bind(&Acceptor::listen, acceptor_.get()));//开启socket监听
     }
 }
 

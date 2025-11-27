@@ -65,6 +65,7 @@ EventLoop::EventLoop()
     
     wakeupChannel_->enableReading(); // 每一个EventLoop都将监听wakeupChannel_的EPOLL读事件了
 }
+
 EventLoop::~EventLoop()
 {
     wakeupChannel_->disableAll(); // 给Channel移除所有感兴趣的事件

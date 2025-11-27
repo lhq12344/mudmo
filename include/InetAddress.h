@@ -22,5 +22,5 @@ public:
     void setSockAddr(const sockaddr_in &addr) { addr_ = addr; }
 
 private:
-    sockaddr_in addr_;
+    sockaddr_in addr_;//sockaddr_in 是 IPv4 套接字地址结构体，用于在 C/C++ 中表示 IPv4 的地址与端口。
 };

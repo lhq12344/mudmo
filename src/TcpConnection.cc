@@ -60,7 +60,7 @@ TcpConnection::~TcpConnection()
 
 void TcpConnection::send(const std::string &buf)
 {
-    if (state_ == kConnected)
+    if (connected())
     {
         if (loop_->isInLoopThread()) // 这种是对于单个reactor的情况 用户调用conn->send时 loop_即为当前线程
         {
@@ -210,7 +210,7 @@ void TcpConnection::handleWrite()
         if (n > 0)
         {
             outputBuffer_.retrieve(n);//从缓冲区读取reable区域的数据移动readindex下标
-            if (outputBuffer_.readableBytes() == 0)
+            if (outputBuffer_.readableBytes() == 0)//全部读完
             {
                 channel_->disableWriting();
                 if (writeCompleteCallback_)

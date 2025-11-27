@@ -29,7 +29,7 @@ EventLoop *EventLoopThread::startLoop()
     EventLoop *loop = nullptr;
     {
         std::unique_lock<std::mutex> lock(mutex_);
-        cond_.wait(lock, [this](){return loop_ != nullptr;});
+        cond_.wait(lock, [this](){return loop_ != nullptr;});// 等待新线程创建完loop对象
         loop = loop_;
     }
     return loop;
@@ -54,3 +54,9 @@ void EventLoopThread::threadFunc()
     std::unique_lock<std::mutex> lock(mutex_);
     loop_ = nullptr;
 }
+/*subLoop 创建完 → 告知主线程 loop_ = &loop
+subLoop 退出 → 告知 loop_ = nullptr
+两个点都必须同步，否则：
+主线程可能在 subLoop 未创建时误操作
+主线程可能在 subLoop 销毁后使用悬空指针
+ */

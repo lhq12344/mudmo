@@ -12,7 +12,7 @@ const int kDeleted = 2; // 某个channel已经从Poller删除
 
 EPollPoller::EPollPoller(EventLoop *loop)
     : Poller(loop)
-    , epollfd_(::epoll_create1(EPOLL_CLOEXEC)) 
+    , epollfd_(::epoll_create1(EPOLL_CLOEXEC)) //EPOLL_CLOEXEC:在进程调用 exec() 执行新程序时，这个 epoll fd 会被自动关闭。
     , events_(kInitEventListSize) // vector<epoll_event>(16)
 {
     if (epollfd_ < 0)
