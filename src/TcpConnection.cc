@@ -138,7 +138,8 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
         }
     }
 }
-
+//TcpConnection::shutdown() 只关闭写端（半关闭），不会立即触发 epoll 的关闭事件；
+//最终由“对端关闭写端（我方读端 read=0）”触发 EPOLLIN（读事件）来检测到连接关闭。
 void TcpConnection::shutdown()
 {
     if (state_ == kConnected)

@@ -55,7 +55,7 @@ void TcpServer::setThreadNum(int numThreads)
 // 开启服务器监听
 void TcpServer::start()
 {
-    if (started_.fetch_add(1) == 0)    // 防止一个TcpServer对象被start多次
+    if (started_.fetch_add(1) == 0)    // 返回返回加 1 前的旧值，防止一个TcpServer对象被start多次
     {
         threadPool_->start(threadInitCallback_);    // 启动底层的loop线程池
         loop_->runInLoop(std::bind(&Acceptor::listen, acceptor_.get()));//开启socket监听

@@ -30,6 +30,12 @@ Channel::~Channel()
  * 此处用tie去解决TcpConnection和Channel的生命周期时长问题，从而保证了Channel对象能够在
  * TcpConnection销毁前销毁。
  **/
+/*Channel 不拥有 TcpConnection，但负责回调 TcpConnection 的事件处理函数。
+为了避免 TcpConnection 被销毁后 Channel 仍然执行回调（导致崩溃），
+muduo 在 Channel 中存一个 weak_ptr（tie），
+事件触发时通过 tie_.lock() 判断 TcpConnection 是否存活。
+如果存活则执行回调，不存活则安全丢弃事件。
+这保证了 Channel 与 TcpConnection 的生命周期解耦和线程安全。*/
 void Channel::tie(const std::shared_ptr<void> &obj)
 {
     tie_ = obj;

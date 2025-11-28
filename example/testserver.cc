@@ -46,6 +46,8 @@ private:
         conn->send(msg);
         // conn->shutdown();   // 关闭写端 底层响应EPOLLHUP => 执行closeCallback_
     }
+	
+private:
     TcpServer server_;
     EventLoop *loop_;
 
